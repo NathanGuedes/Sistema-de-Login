@@ -31,7 +31,7 @@ class Router
         $this->group[$prefix] = $callback;
     }
 
-    public function add(string $requestMethod, string $uri, array $controller, array $middleware = []): void
+    public function add(string $requestMethod, string $uri, array|Closure $controller, array $middleware = []): void
     {
         $this->routes[] = [$requestMethod, $uri, $controller, $middleware];
     }
@@ -88,19 +88,22 @@ class Router
 
             case Dispatcher::FOUND:
 
-                [, [$controller, $method], $vars] = $routeInfo;
+                [, $controller, $vars] = $routeInfo;
+
+                if (is_callable($controller)) {
+                    $method = null;
+                }
+
+                if (is_array($controller)) {
+                    [$controller, $method] = $controller;
+                }
                 break;
         }
 
-        /** @var string $controller */
-        $controller = $this->container->get($controller);
-        assert($controller instanceof ControllerInterface);
-
-        /** @var string $method */
+        /** @var Closure|string $controller */
+        /** @var ?string $method */
         /** @var array $vars */
-        $response = $controller->$method(...$vars);
-
-        $response->send();
+        $this->send($controller, $method, $vars);
     }
 
     /**
@@ -132,5 +135,27 @@ class Router
                 }
             }
         }
+    }
+
+    /**
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    private function send(Closure|string $controller, ?string $method, array $vars): void
+    {
+        if (is_callable($controller) && is_null($method)) {
+            call_user_func_array($controller, $vars);
+            return;
+        }
+        $controller = $this->container->get($controller);
+        $response = call_user_func([$controller, $method], $vars);
+        $controller_namespace = get_class($controller);
+
+        if (!$response instanceof Response) {
+            throw new Exception("Response not found in $controller_namespace controller and $method method");
+        }
+
+        $response->send();
     }
 }
