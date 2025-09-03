@@ -10,8 +10,8 @@ use DI\NotFoundException;
 use Exception;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
-use Http\Controllers\MethodNotAllowedController;
-use Http\Controllers\NotFoundController;
+use Http\Controllers\Errors\MethodNotAllowedController;
+use Http\Controllers\Errors\NotFoundController;
 use Http\Middleware\Middleware;
 use function FastRoute\simpleDispatcher;
 

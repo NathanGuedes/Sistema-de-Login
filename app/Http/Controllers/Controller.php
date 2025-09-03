@@ -2,17 +2,17 @@
 
 namespace Http\Controllers;
 
+use Contracts\ControllerInterface;
 use Exception;
 use League\Plates\Engine;
 
-class Controller
+abstract class Controller implements ControllerInterface
 {
     /**
      * @throws Exception
      */
-    public static function view(string $view, array $data = [])
+    public static function view(string $view, array $data = []): string
     {
-
         $path = basePath() . '/resources/views/';
 
         if (! file_exists($path . $view . '.php')) {

@@ -1,11 +1,12 @@
 <?php
 
-namespace Http\Controllers;
+namespace Http\Controllers\Errors;
 
 use Contracts\ControllerInterface;
 use Core\Response;
+use Http\Controllers\Controller;
 
-class MethodNotAllowedController implements ControllerInterface
+class MethodNotAllowedController extends Controller
 {
     public function __construct()
     {
