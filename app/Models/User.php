@@ -2,9 +2,7 @@
 
 namespace Models;
 
-use DateMalformedStringException;
 use DateTimeImmutable;
-use Random\RandomException;
 
 class User
 {
@@ -14,30 +12,22 @@ class User
     private string $passwordHash;
     private string $token;
 
-    private DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt;
     private ?DateTimeImmutable $updatedAt;
     private ?DateTimeImmutable $activatedAt;
 
     /**
-     * @param string $id
      * @param string $name
      * @param string $email
-     * @param string $passwordHash
+     * @param string $password
      * @param string $token
-     * @param DateTimeImmutable $createdAt
-     * @param DateTimeImmutable|null $updatedAt
-     * @param DateTimeImmutable|null $activatedAt
      */
-    public function __construct(string $id, string $name, string $email, string $passwordHash, string $token, DateTimeImmutable $createdAt, ?DateTimeImmutable $updatedAt, ?DateTimeImmutable $activatedAt)
+    public function __construct(string $name, string $email, string $password, string $token)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->passwordHash = $passwordHash;
+        $this->passwordHash = $password;
         $this->token = $token;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->activatedAt = $activatedAt;
     }
 
 
@@ -79,6 +69,26 @@ class User
     public function getActivatedAt(): ?DateTimeImmutable
     {
         return $this->activatedAt;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setActivatedAt(?DateTimeImmutable $activatedAt): void
+    {
+        $this->activatedAt = $activatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 
 

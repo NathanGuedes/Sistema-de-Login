@@ -16,14 +16,16 @@ class RegisterController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * @throws Exception
+     */
     public function index(): Response
     {
         return new Response($this->view('auth/register'));
     }
 
-    public function register(Request $request)
+    public function register(Request $request): void
     {
-        var_dump($request->post);
-        $this->userService->register();
+        $this->userService->register($request->post);
     }
 }

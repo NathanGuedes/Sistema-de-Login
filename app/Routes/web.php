@@ -16,6 +16,7 @@ try {
     $router->add('POST', '/register', function () use ($container) {
         $controller = $container->get(RegisterController::class);
         $request = $container->get(Request::class);
+
         $controller->register($request);
     });
 
