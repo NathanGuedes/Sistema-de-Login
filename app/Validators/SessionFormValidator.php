@@ -2,7 +2,7 @@
 
 namespace Validators;
 
-class RegisterFormValidator
+class SessionFormValidator
 {
     public static function validate(array $data): array
     {
@@ -18,11 +18,6 @@ class RegisterFormValidator
 
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Email address is not valid";
-            }
-
-            if ($data['password'] != $data['password_confirm']) {
-                $errors['password'] = "Passwords do not match";
-                $errors['password_confirm'] = "Passwords do not match";
             }
         }
 

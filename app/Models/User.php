@@ -26,7 +26,7 @@ class User
     {
         $this->name = $name;
         $this->email = $email;
-        $this->passwordHash = $password;
+        $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $this->token = $token;
     }
 

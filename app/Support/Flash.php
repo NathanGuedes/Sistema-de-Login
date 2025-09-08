@@ -20,6 +20,6 @@ class Flash
             unset($_SESSION['__flash'][$index]);
         }
 
-        return $value;
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 }

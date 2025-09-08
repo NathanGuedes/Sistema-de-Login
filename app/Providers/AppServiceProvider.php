@@ -7,7 +7,8 @@ use Core\Request;
 use Database\DatabaseConnection;
 use PDO;
 use Repository\UserRepository;
-use Services\UserService;
+use Services\RegisterService;
+use Services\SessionService;
 
 class AppServiceProvider
 {
@@ -19,7 +20,8 @@ class AppServiceProvider
             },
             UserRepositoryInterface::class => \DI\autowire(UserRepository::class),
 
-            UserService::class => \DI\autowire(),
+            RegisterService::class => \DI\autowire(),
+            SessionService::class => \DI\autowire(),
 
             Request::class => function () {
                 return Request::create();

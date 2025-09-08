@@ -7,7 +7,7 @@ use Exception;
 class Middleware
 {
     protected const array MAP = [
-        'auth' => Auth::class,
+        'Auth' => Auth::class,
         'guest' => Guest::class
     ];
 

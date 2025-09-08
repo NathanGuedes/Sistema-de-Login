@@ -4,8 +4,9 @@ global $container;
 
 use Core\Request;
 use Core\Router;
+use Http\Controllers\Auth\RegisterController;
+use Http\Controllers\Auth\SessionController;
 use Http\Controllers\HomeController;
-use Http\Controllers\RegisterController;
 
 try {
     $router = $container->get(Router::class);
@@ -15,9 +16,15 @@ try {
 
     $router->add('POST', '/register', function () use ($container) {
         $controller = $container->get(RegisterController::class);
-        $request = $container->get(Request::class);
-
+        $request = $container->get(Request::class)->post;
         $controller->register($request);
+    });
+
+    $router->add('GET', '/login', [SessionController::class, 'index', 'guest']);
+    $router->add('POST', '/login', function () use ($container) {
+        $controller = $container->get(SessionController::class);
+        $request = $container->get(Request::class)->post;
+        $controller->store($request);
     });
 
     $router->run();
