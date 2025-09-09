@@ -27,7 +27,7 @@ class RegisterService
         $errors = RegisterFormValidator::validate($formData);
 
         if (!empty($errors)) {
-            throw new ValidationException($errors);
+            throw new ValidationException($errors, code: 400);
         }
 
         $token = Token::genToken();

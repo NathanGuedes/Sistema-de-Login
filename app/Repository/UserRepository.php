@@ -42,12 +42,12 @@ readonly class UserRepository implements UserRepositoryInterface
         // TODO: Implement delete() method.
     }
 
-    public function findById(string $id): ?array
+    public function findById(string $id): bool|array
     {
         // TODO: Implement findById() method.
     }
 
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email): bool|array
     {
         $sql = "SELECT name, email, password FROM users WHERE email = :email";
 

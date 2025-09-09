@@ -26,6 +26,7 @@ try {
         $request = $container->get(Request::class)->post;
         $controller->store($request);
     });
+    $router->add('POST', '/logout', [SessionController::class, 'destroy', 'auth']);
 
     $router->run();
 } catch (Exception $e) {

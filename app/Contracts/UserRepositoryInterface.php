@@ -10,6 +10,6 @@ interface UserRepositoryInterface
     public function update(User $user): void;
     public function delete(string $id): void;
 
-    public function findById(string $id): ?array;
-    public function findByEmail(string $email): ?array;
+    public function findById(string $id): bool|array;
+    public function findByEmail(string $email): bool|array;
 }

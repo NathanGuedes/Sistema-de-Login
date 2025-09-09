@@ -6,13 +6,14 @@ use Core\Response;
 use Exception;
 use Exceptions\ValidationException;
 use Http\Controllers\Controller;
+use JetBrains\PhpStorm\NoReturn;
 use Services\SessionService;
 use Support\Flash;
 
 class SessionController extends Controller
 {
 
-private SessionService $sessionService;
+    private SessionService $sessionService;
 
     public function __construct(SessionService $sessionService)
     {
@@ -31,11 +32,29 @@ private SessionService $sessionService;
     {
         try {
             $this->sessionService->session($request);
-        }catch (ValidationException $e){
-            foreach ($e->getErrors() as $field => $error) {
-                Flash::set($field, $error);
+        } catch (ValidationException $e) {
+            if (is_array($e->getErrors())) {
+                foreach ($e->getErrors() as $field => $error) {
+                    Flash::set($field, $error);
+                }
             }
+
+            Flash::set('error', $e->getErrors());
             redirect("/login");
         }
+
+        redirect("/");
+    }
+
+    #[NoReturn]
+    public function destroy(array $request): void
+    {
+        try {
+            $this->sessionService->killSession();
+        } catch (ValidationException $e) {
+            Flash::set('error', $e->getMessage());
+        }
+
+        redirect("/");
     }
 }

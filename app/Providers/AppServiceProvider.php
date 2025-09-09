@@ -2,6 +2,7 @@
 
 namespace Providers;
 
+use Contracts\SessionInterface;
 use Contracts\UserRepositoryInterface;
 use Core\Request;
 use Database\DatabaseConnection;
@@ -9,6 +10,7 @@ use PDO;
 use Repository\UserRepository;
 use Services\RegisterService;
 use Services\SessionService;
+use Support\SessionManager;
 
 class AppServiceProvider
 {
@@ -19,6 +21,7 @@ class AppServiceProvider
                 return DatabaseConnection::connect();
             },
             UserRepositoryInterface::class => \DI\autowire(UserRepository::class),
+            SessionInterface::class => \DI\autowire(SessionManager::class),
 
             RegisterService::class => \DI\autowire(),
             SessionService::class => \DI\autowire(),
