@@ -49,7 +49,7 @@ readonly class UserRepository implements UserRepositoryInterface
 
     public function findByEmail(string $email): bool|array
     {
-        $sql = "SELECT name, email, password FROM users WHERE email = :email";
+        $sql = "SELECT * FROM users WHERE email = :email";
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
