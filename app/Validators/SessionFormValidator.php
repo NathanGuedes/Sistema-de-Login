@@ -2,11 +2,17 @@
 
 namespace Validators;
 
+use Support\Csrf;
+
 class SessionFormValidator
 {
     public static function validate(array $data): array
     {
         $errors = [];
+
+        if (Csrf::validateToken()) {
+            $errors['error'] = Csrf::validateToken();
+        }
 
         foreach($data as $field => $value){
             if (empty($value)){
