@@ -18,14 +18,14 @@ try {
         $controller = $container->get(RegisterController::class);
         $request = $container->get(Request::class)->post;
         $controller->register($request);
-    });
+    }, ['guest']);
 
     $router->add('GET', '/login', [SessionController::class, 'index', 'guest']);
     $router->add('POST', '/login', function () use ($container) {
         $controller = $container->get(SessionController::class);
         $request = $container->get(Request::class)->post;
         $controller->store($request);
-    });
+    }, ['guest']);
     $router->add('POST', '/logout', [SessionController::class, 'destroy', 'auth']);
 
     $router->run();

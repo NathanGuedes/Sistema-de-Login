@@ -13,11 +13,8 @@ use Support\Flash;
 class SessionController extends Controller
 {
 
-    private SessionService $sessionService;
-
-    public function __construct(SessionService $sessionService)
+    public function __construct(private readonly SessionService $sessionService)
     {
-        $this->sessionService = $sessionService;
     }
 
     /**
@@ -33,13 +30,15 @@ class SessionController extends Controller
         try {
             $this->sessionService->session($request);
         } catch (ValidationException $e) {
-            if (is_array($e->getErrors())) {
-                foreach ($e->getErrors() as $field => $error) {
+            $errors = $e->getErrors();
+            if (is_array($errors)) {
+                foreach ($errors as $field => $error) {
                     Flash::set($field, $error);
                 }
+            } else {
+                Flash::set('error', $errors);
             }
 
-            Flash::set('error', $e->getErrors());
             redirect("/login");
         }
 
@@ -47,13 +46,9 @@ class SessionController extends Controller
     }
 
     #[NoReturn]
-    public function destroy(array $request): void
+    public function destroy(): void
     {
-        try {
-            $this->sessionService->killSession();
-        } catch (ValidationException $e) {
-            Flash::set('error', $e->getMessage());
-        }
+        $this->sessionService->killSession();
 
         redirect("/");
     }

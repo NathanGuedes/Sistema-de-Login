@@ -14,7 +14,7 @@ class DatabaseConnection
         $dsn = 'mysql:'
             . 'host=' . $_ENV['DB_HOST'] . ';'
             . 'port=' . $_ENV['DB_PORT'] . ';'
-            . 'dbname=' . $_ENV['DB_NAME'] . ';'
+            . 'dbname=' . $_ENV['DB_DATABASE'] . ';'
             . 'charset=' . $_ENV['DB_CHARSET'];
 
         if (static::$instance === null) {

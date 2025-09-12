@@ -5,7 +5,8 @@
         "php-di/php-di": "^7.1",
         "vlucas/phpdotenv": "^5.6",
       "ext-pdo": "*",
-        "league/plates": "^3.6"
+        "league/plates": "^3.6",
+        "predis/predis": "^3.2"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.3"
@@ -20,7 +21,8 @@
      "": "app/"
    },
     "files": [
-      "app/Helpers/helper.php"
+      "app/Helpers/helper.php",
+      "app/Helpers/flash.php"
     ]
   }
 }

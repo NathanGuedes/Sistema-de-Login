@@ -22,17 +22,17 @@
             <div class="flex items-center space-x-4">
                 <div id="guestLinks" class="hidden md:flex items-center space-x-4">
                     <?php if (!isset($_SESSION['user']) ?? false): ?>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">
+                    <a href="/login" class="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">
                         Login
                     </a>
-                    <a href="#"
+                    <a href="/register"
                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                         Cadastrar
                     </a>
                     <?php endif ?>
 
                     <?php if (isset($_SESSION['user']) ?? false): ?>
-                    <form action="#" method="post">
+                    <form action="/logout" method="post">
                         <button type="submit" class="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors">Log Out</button>
                     </form>
                     <?php endif ?>
