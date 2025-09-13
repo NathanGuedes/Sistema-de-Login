@@ -2,6 +2,7 @@
 
 namespace Http\Controllers\Auth;
 
+use Core\Request;
 use Core\Response;
 use Exception;
 use Exceptions\ValidationException;
@@ -36,21 +37,21 @@ class RegisterController extends Controller
             foreach ($e->getErrors() as $field => $error) {
                 Flash::set($field, $error);
             }
-            redirect("/register");
+            Response::redirect("/register", Request::create()->post);
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 Flash::set('email', "Já existe uma conta com este e-mail. Tente fazer login ou use outro e-mail.");
-                redirect("/register");
+                Response::redirect("/register", Request::create()->post);
             }
 
             Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
-            redirect("/register");
+            Response::redirect("/register", Request::create()->post);
 
         } catch (RandomException|Exception $e) {
             Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
-            redirect("/register");
+            Response::redirect("/register", Request::create()->post);
         }
 
-        redirect("/login");
+        Response::redirect("/login", Request::create()->post ?? []);
     }
 }

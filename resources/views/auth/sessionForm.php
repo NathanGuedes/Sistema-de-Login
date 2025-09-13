@@ -30,7 +30,8 @@ $this->layout('layouts/auth', ['title' => 'Log In']) ?>
                     <div class="relative">
                         <input type="email" id="email" name="email" required
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50 backdrop-blur-sm"
-                               placeholder="seu@email.com">
+                               placeholder="seu@email.com",
+                               value="<?= flashOld('emailField') ?>">
                     </div>
                     <?= flash('email', 'text-xs text-red-500') ?>
                 </div>

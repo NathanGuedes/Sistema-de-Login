@@ -6,7 +6,6 @@ use Core\Response;
 use Exception;
 use Exceptions\ValidationException;
 use Http\Controllers\Controller;
-use JetBrains\PhpStorm\NoReturn;
 use Services\SessionService;
 use Support\Flash;
 
@@ -39,13 +38,12 @@ class SessionController extends Controller
                 Flash::set('error', $errors);
             }
 
-            redirect("/login");
+            Response::redirect("/login", $request);
         }
 
         redirect("/");
     }
 
-    #[NoReturn]
     public function destroy(): void
     {
         $this->sessionService->killSession();

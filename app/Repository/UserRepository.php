@@ -44,7 +44,13 @@ readonly class UserRepository implements UserRepositoryInterface
 
     public function findById(string $id): bool|array
     {
-        // TODO: Implement findById() method.
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "id" => $id
+        ]);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result ?: false;
     }
 
     public function findByEmail(string $email): bool|array
