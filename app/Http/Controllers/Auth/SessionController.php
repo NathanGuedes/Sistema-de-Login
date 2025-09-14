@@ -2,8 +2,10 @@
 
 namespace Http\Controllers\Auth;
 
+use Core\Request;
 use Core\Response;
 use Exception;
+use Random\RandomException;
 use Exceptions\ValidationException;
 use Http\Controllers\Controller;
 use Services\SessionService;
@@ -12,9 +14,7 @@ use Support\Flash;
 class SessionController extends Controller
 {
 
-    public function __construct(private readonly SessionService $sessionService)
-    {
-    }
+    public function __construct(private readonly SessionService $sessionService) {}
 
     /**
      * @throws Exception
@@ -39,6 +39,9 @@ class SessionController extends Controller
             }
 
             Response::redirect("/login", $request);
+        } catch (RandomException | Exception $e) {
+            Flash::set('error', "Não foi possivel, concluir seu login, tente mais tarde.");
+            Response::redirect("/register", Request::create()->post);
         }
 
         redirect("/");

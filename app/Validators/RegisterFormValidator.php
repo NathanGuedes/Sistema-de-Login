@@ -2,19 +2,25 @@
 
 namespace Validators;
 
+use Support\Csrf;
+
 class RegisterFormValidator
 {
     public static function validate(array $data): array
     {
         $errors = [];
 
-        foreach($data as $field => $value){
-            if (empty($value)){
+        if (Csrf::validateToken()) {
+            $errors['error'] = Csrf::validateToken();
+        }
+
+        foreach ($data as $field => $value) {
+            if (empty($value)) {
                 $errors[$field] = "$field is required";
             }
         }
 
-        if (empty($errors)){
+        if (empty($errors)) {
 
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Email address is not valid";

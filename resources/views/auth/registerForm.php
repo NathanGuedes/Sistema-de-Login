@@ -1,4 +1,5 @@
-<?php $this->layout('layouts/auth', ['title' => 'Register']) ?>
+<?php use Random\RandomException;
+$this->layout('layouts/auth', ['title' => 'Register']) ?>
 
 <div class="flex items-center justify-center px-6 py-12">
     <div class="w-full max-w-md">
@@ -17,6 +18,13 @@
             </div>
 
             <form id="registerForm" class="space-y-6" method="POST" action="/register">
+                <!-- Csrf-->
+                 <?php try {
+                    echo getToken();
+                } catch (RandomException $e) {
+
+                } ?>
+
                 <!-- name -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nome completo</label>
