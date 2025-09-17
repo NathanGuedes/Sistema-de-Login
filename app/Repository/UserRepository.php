@@ -64,4 +64,29 @@ readonly class UserRepository implements UserRepositoryInterface
 
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function findByToken(string $token): bool|array
+    {
+        $sql = "SELECT * FROM users WHERE token = :token";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "token" => $token
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    public function updateToken(string $email, string $token): void
+    {
+        $sql = "UPDATE users SET token = :token, token_validity = :token_validity WHERE email = :email";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "token" => $token,
+            "token_validity" => date('Y-m-d H:i:s', time() + 15 * 60),
+            "email" => $email
+        ]);
+    }
 }

@@ -6,7 +6,7 @@ use Contracts\ControllerInterface;
 use Exception;
 use League\Plates\Engine;
 
-abstract class Controller implements ControllerInterface
+abstract class Controller
 {
     /**
      * @throws Exception

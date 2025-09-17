@@ -2,6 +2,7 @@
 
 namespace Http\Controllers\Auth;
 
+use Contracts\ControllerInterface;
 use Core\Request;
 use Core\Response;
 use Exception;
@@ -12,7 +13,7 @@ use Random\RandomException;
 use Services\RegisterService;
 use Support\Flash;
 
-class RegisterController extends Controller
+class RegisterController extends Controller implements ControllerInterface
 {
     private RegisterService $registerService;
 

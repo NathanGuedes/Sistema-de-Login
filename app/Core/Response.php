@@ -13,7 +13,6 @@ class Response
         private readonly array $headers = [],
     )
     {
-
     }
 
     public function send(): void
@@ -38,7 +37,9 @@ class Response
         }
 
         foreach ($flash as $key => $value) {
-            Flash::set($key . 'Field', $value);
+            $key === 'error' ?
+                Flash::set($key, $value):
+                Flash::set($key . 'Field', $value);
         }
 
         header("Location: $uri", true, $statusCode);

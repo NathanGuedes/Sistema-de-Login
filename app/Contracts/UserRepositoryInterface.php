@@ -12,4 +12,5 @@ interface UserRepositoryInterface
 
     public function findById(string $id): bool|array;
     public function findByEmail(string $email): bool|array;
+    public function findByToken(string $token): bool|array;
 }

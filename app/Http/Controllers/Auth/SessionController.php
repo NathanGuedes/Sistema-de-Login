@@ -2,16 +2,17 @@
 
 namespace Http\Controllers\Auth;
 
+use Contracts\ControllerInterface;
 use Core\Request;
 use Core\Response;
 use Exception;
-use Random\RandomException;
+use Exceptions\ActiveValidationException;
 use Exceptions\ValidationException;
 use Http\Controllers\Controller;
 use Services\SessionService;
 use Support\Flash;
 
-class SessionController extends Controller
+class SessionController extends Controller implements ControllerInterface
 {
 
     public function __construct(private readonly SessionService $sessionService) {}
@@ -37,9 +38,10 @@ class SessionController extends Controller
             } else {
                 Flash::set('error', $errors);
             }
-
             Response::redirect("/login", $request);
-        } catch (RandomException | Exception $e) {
+        } catch (ActiveValidationException){
+            Response::redirect("/email/activation/send");
+        } catch (Exception) {
             Flash::set('error', "Não foi possivel, concluir seu login, tente mais tarde.");
             Response::redirect("/register", Request::create()->post);
         }

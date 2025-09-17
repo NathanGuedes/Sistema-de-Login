@@ -4,6 +4,7 @@ namespace Services;
 
 use Contracts\SessionInterface;
 use Contracts\UserRepositoryInterface;
+use Exceptions\ActiveValidationException;
 use Exceptions\ValidationException;
 use Validators\SessionFormValidator;
 
@@ -20,6 +21,7 @@ class SessionService
 
     /**
      * @throws ValidationException
+     * @throws ActiveValidationException
      */
     public function session(array $formData): void
     {
@@ -36,6 +38,11 @@ class SessionService
         }
 
         $this->startSessionLogin($user);
+
+        if ($user['active'] === 0) {
+            throw new ActiveValidationException();
+        }
+
     }
 
     /**
@@ -46,7 +53,8 @@ class SessionService
     {
         $this->sessionManager->set('user', [
             'email' => $formData['email'],
-            'name' => $formData['name']
+            'name' => $formData['name'],
+            'active' => $formData['active']
         ]);
 
         $this->sessionManager->regenerate();

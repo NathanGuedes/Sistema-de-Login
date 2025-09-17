@@ -2,10 +2,11 @@
 
 namespace Support;
 
+use Contracts\EmailServiceInterface;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Mailer
+class Mailer implements EmailServiceInterface
 {
     private PHPMailer $mail;
 
@@ -24,7 +25,7 @@ class Mailer
     /**
      * @throws Exception
      */
-    public function sendEmail(string $to, string $name, string $subject, string $message): void
+    public function send(string $to, string $name, string $subject, string $message): void
     {
         $this->mail->setFrom('from@example.com', 'Mailer');
         $this->mail->addAddress($to, $name);

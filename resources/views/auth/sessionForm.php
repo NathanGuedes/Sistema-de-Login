@@ -15,6 +15,7 @@ $this->layout('layouts/auth', ['title' => 'Log In']) ?>
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta!</h2>
                 <p class="text-gray-600 text-sm">Entre com a sua conta para continuar</p>
                 <?= flash('error', 'text-xs text-red-500') ?>
+                <?= flash('success', 'text-xs text-green-500') ?>
             </div>
 
             <form id="loginForm" class="space-y-6" method="post" action="/login">
