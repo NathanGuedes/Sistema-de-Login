@@ -12,9 +12,9 @@ class User
     private string $passwordHash;
     private string $token;
 
-    private ?DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
     private ?DateTimeImmutable $updatedAt;
-    private ?DateTimeImmutable $activatedAt;
+    private ?DateTimeImmutable $active;
 
     /**
      * @param string $name
@@ -27,6 +27,7 @@ class User
         $this->name = $name;
         $this->email = $email;
         $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $this->createdAt = new DateTimeImmutable();
         $this->token = $token;
     }
 
@@ -66,9 +67,9 @@ class User
         return $this->updatedAt;
     }
 
-    public function getActivatedAt(): ?DateTimeImmutable
+    public function getActive(): ?DateTimeImmutable
     {
-        return $this->activatedAt;
+        return $this->active;
     }
 
     public function setId(string $id): void
@@ -78,7 +79,7 @@ class User
 
     public function setActivatedAt(?DateTimeImmutable $activatedAt): void
     {
-        $this->activatedAt = $activatedAt;
+        $this->active = $activatedAt;
     }
 
     public function setUpdatedAt(?DateTimeImmutable $updatedAt): void
@@ -86,7 +87,7 @@ class User
         $this->updatedAt = $updatedAt;
     }
 
-    public function setCreatedAt(?DateTimeImmutable $createdAt): void
+    public function setCreatedAt(DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

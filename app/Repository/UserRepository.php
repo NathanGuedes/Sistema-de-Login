@@ -89,4 +89,17 @@ readonly class UserRepository implements UserRepositoryInterface
             "email" => $email
         ]);
     }
+
+    public function updatePasswordWithToke($token, $password): void
+    {
+        $sql = "UPDATE users SET password = :password, token = :token, token_validity = :token_validity WHERE token = :tokenVerify";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            "password" => $password,
+            "token" => null,
+            "token_validity" => null,
+            "tokenVerify" => $token
+        ]);
+    }
 }

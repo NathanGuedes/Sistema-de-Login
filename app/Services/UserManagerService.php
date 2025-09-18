@@ -4,22 +4,34 @@ namespace Services;
 
 use Contracts\EmailServiceInterface;
 use Contracts\UserRepositoryInterface;
+use DateMalformedStringException;
 use DateTime;
 use Exception;
 use Exceptions\ActiveValidationException;
 use Exceptions\InvalidTokenException;
+use Exceptions\ValidationException;
 use PDO;
 use Random\RandomException;
-use Support\SessionManager;
 use Support\Token;
+use Validators\ForgotPasswordFormValidator;
 
 readonly class UserManagerService
 {
     public function __construct(private UserRepositoryInterface $userRepository,
-                                private SessionManager          $sessionManager,
                                 private EmailServiceInterface   $emailService,
-                                private PDO $pdo
-    ){}
+                                private PDO                     $pdo
+    )
+    {
+    }
+
+    public function sendEmail(string $uri, string $userEmail, string $userName, string $subject, string $token): void
+    {
+
+        $message = $_SERVER['HTTP_HOST'] . $uri . '/' . $token;
+
+        $this->emailService->send($userEmail, $userName, $subject, $message);
+
+    }
 
 
     /**
@@ -42,7 +54,7 @@ readonly class UserManagerService
     {
         $user = $this->userRepository->findByToken($token);
 
-        if (!$user){
+        if (!$user) {
             throw new InvalidTokenException();
         }
 
@@ -74,12 +86,60 @@ readonly class UserManagerService
         ]);
     }
 
-    public function sendEmail(string $uri, string $userEmail, string $userName, string $subject, string $token): void
+    /**
+     * @throws RandomException
+     */
+    public function forgotPasswordSend(array $data): void
     {
+        $token = Token::genToken();
 
-        $message = $_SERVER['HTTP_HOST'] . $uri . '/' . $token;
+        $this->userRepository->updateToken($data['email'], $token);
 
-        $this->emailService->send($userEmail, $userName, $subject, $message);
-
+        $this->sendEmail('/forgot/password/email/recovery', $data['email'], $data['email'], 'Recuperacao de senha', $token);
     }
+
+    /**
+     * @throws ValidationException
+     */
+    public function updatePassword(array $formData): string
+    {
+        $error = ForgotPasswordFormValidator::validate($formData);
+
+        if (!empty($error)) {
+            throw new ValidationException($error);
+        }
+
+        $password = password_hash($formData['password'], PASSWORD_DEFAULT);
+        $token = $formData['__token'];
+
+        $user = $this->userRepository->findByToken($token);
+
+        $this->userRepository->updatePasswordWithToke($token, $password);
+
+        return $user['email'];
+    }
+
+    /**
+     * @throws DateMalformedStringException
+     * @throws InvalidTokenException
+     */
+    public function checkToken($token): void
+    {
+        $user = $this->userRepository->findByToken($token);
+
+        if (!$user) {
+            throw new InvalidTokenException();
+        }
+
+        $tokenValidity = $user['token_validity'] !== null ? new DateTime($user['token_validity']) : null;
+
+
+        $now = new DateTime();
+
+
+        if ($now > $tokenValidity) {
+            throw new InvalidTokenException();
+        }
+    }
+
 }

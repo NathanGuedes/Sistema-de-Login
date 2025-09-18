@@ -35,24 +35,38 @@ class RegisterController extends Controller implements ControllerInterface
         try {
             $this->registerService->register($request);
         } catch (ValidationException $e) {
-            foreach ($e->getErrors() as $field => $error) {
-                Flash::set($field, $error);
-            }
-            Response::redirect("/register", Request::create()->post);
+            $this->handleValidationException($e);
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                Flash::set('email', "Já existe uma conta com este e-mail. Tente fazer login ou use outro e-mail.");
-                Response::redirect("/register", Request::create()->post);
-            }
-
-            Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
-            Response::redirect("/register", Request::create()->post);
-
+            $this->handlePdoException($e);
         } catch (RandomException|Exception $e) {
-            Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
-            Response::redirect("/register", Request::create()->post);
+            $this->handleGenericException();
         }
 
         Response::redirect("/login", Request::create()->post ?? []);
+    }
+
+    private function handleValidationException(ValidationException $e): void
+    {
+        foreach ($e->getErrors() as $field => $error) {
+            Flash::set($field, $error);
+        }
+        Response::redirect("/register", Request::create()->post);
+    }
+
+    private function handlePdoException(PDOException $e): void
+    {
+        if ($e->getCode() == 23000) {
+            Flash::set('email', "Já existe uma conta com este e-mail. Tente fazer login ou use outro e-mail.");
+            Response::redirect("/register", Request::create()->post);
+        }
+
+        Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
+        Response::redirect("/register", Request::create()->post);
+    }
+
+    private function handleGenericException(): void
+    {
+        Flash::set('error', "Não foi possivel, concluir seu registro, tente mais tarde.");
+        Response::redirect("/register", Request::create()->post);
     }
 }
