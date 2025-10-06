@@ -39,7 +39,7 @@ Siga os passos abaixo para configurar o ambiente de desenvolvimento.
 
 ```bash
 git clone <https://github.com/NathanGuedes/Sistema-de-Login.git>
-cd Sistema-de-Login
+cd Sistema-de-Login-MySql
 ```
 
 ### 2. Crie o Arquivo de Ambiente
